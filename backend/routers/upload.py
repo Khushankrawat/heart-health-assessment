@@ -3,11 +3,12 @@ File upload API endpoints
 """
 
 import os
-from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, Request
 from typing import Dict, Any
 from core.schema import UploadResponse, HeartDiseaseInput, ErrorResponse
 from core.pdf import pdf_processor
 from core.ocr import ocr_processor
+from core.security import security_middleware, log_security_event, get_client_ip
 
 router = APIRouter(prefix="/api", tags=["upload"])
 
@@ -28,20 +29,34 @@ def validate_file(file: UploadFile) -> bool:
     
     return True
 
+async def security_check(request: Request):
+    """Security middleware for upload endpoints"""
+    await security_middleware.rate_limit_check(request)
+
 @router.post("/upload", response_model=UploadResponse)
-async def upload_health_report(file: UploadFile = File(...)):
+async def upload_health_report(
+    file: UploadFile = File(...),
+    request: Request = None,
+    _: None = Depends(security_check)
+):
     """
     Upload health report (PDF or image) and extract health data
     
     Args:
         file: Uploaded file (PDF, JPG, or PNG)
+        request: FastAPI request object for security logging
         
     Returns:
         Upload response with extracted health data
     """
     try:
-        # Validate file
+        # Basic file validation
         if not validate_file(file):
+            log_security_event("invalid_file_upload", {
+                "filename": file.filename,
+                "content_type": file.content_type,
+                "size": getattr(file, 'size', 'unknown')
+            }, request)
             raise HTTPException(
                 status_code=400, 
                 detail="Invalid file type or size. Supported: PDF, JPG, PNG (max 10MB)"
@@ -49,6 +64,32 @@ async def upload_health_report(file: UploadFile = File(...)):
         
         # Read file content
         content = await file.read()
+        
+        # Enhanced security validation
+        security_validation = security_middleware.validate_uploaded_file(
+            file.filename or "unknown",
+            file.content_type or "unknown",
+            len(content),
+            content
+        )
+        
+        if not security_validation["is_valid"]:
+            log_security_event("security_validation_failed", {
+                "filename": file.filename,
+                "errors": security_validation["errors"],
+                "warnings": security_validation["warnings"]
+            }, request)
+            raise HTTPException(
+                status_code=400,
+                detail=f"File security validation failed: {', '.join(security_validation['errors'])}"
+            )
+        
+        # Log warnings if any
+        if security_validation["warnings"]:
+            log_security_event("file_security_warnings", {
+                "filename": file.filename,
+                "warnings": security_validation["warnings"]
+            }, request)
         
         # Extract data based on file type
         extracted_data = {}
@@ -99,12 +140,17 @@ async def upload_health_report(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"File processing failed: {str(e)}")
 
 @router.post("/upload-image", response_model=UploadResponse)
-async def upload_image(file: UploadFile = File(...)):
+async def upload_image(
+    file: UploadFile = File(...),
+    request: Request = None,
+    _: None = Depends(security_check)
+):
     """
     Upload image file specifically for OCR processing
     
     Args:
         file: Uploaded image file (JPG or PNG)
+        request: FastAPI request object for security logging
         
     Returns:
         Upload response with extracted health data
@@ -112,6 +158,10 @@ async def upload_image(file: UploadFile = File(...)):
     try:
         # Validate file type
         if file.content_type not in SUPPORTED_IMAGE_TYPES:
+            log_security_event("invalid_image_upload", {
+                "filename": file.filename,
+                "content_type": file.content_type
+            }, request)
             raise HTTPException(
                 status_code=400,
                 detail="Invalid image type. Supported: JPG, PNG"
@@ -120,9 +170,32 @@ async def upload_image(file: UploadFile = File(...)):
         # Validate file size
         content = await file.read()
         if len(content) > MAX_FILE_SIZE:
+            log_security_event("file_too_large", {
+                "filename": file.filename,
+                "size": len(content),
+                "max_size": MAX_FILE_SIZE
+            }, request)
             raise HTTPException(
                 status_code=400,
                 detail="File too large. Maximum size: 10MB"
+            )
+        
+        # Enhanced security validation
+        security_validation = security_middleware.validate_uploaded_file(
+            file.filename or "unknown",
+            file.content_type or "unknown",
+            len(content),
+            content
+        )
+        
+        if not security_validation["is_valid"]:
+            log_security_event("image_security_validation_failed", {
+                "filename": file.filename,
+                "errors": security_validation["errors"]
+            }, request)
+            raise HTTPException(
+                status_code=400,
+                detail=f"Image security validation failed: {', '.join(security_validation['errors'])}"
             )
         
         # Extract data using OCR

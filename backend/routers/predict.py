@@ -2,12 +2,13 @@
 Prediction API endpoints
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import Dict, Any
 from core.schema import HeartDiseaseInput, HeartDiseasePrediction, FeatureContribution, ErrorResponse
 from core.model import model_instance, HeartDiseaseModel
 from core.preprocess import preprocessor_instance, DataPreprocessor
 from core.explain import explainer_instance
+from core.security import security_middleware, log_security_event
 
 router = APIRouter(prefix="/api", tags=["prediction"])
 
@@ -21,17 +22,24 @@ def get_preprocessor():
     """Dependency to get preprocessor instance"""
     return preprocessor_instance
 
+async def security_check(request: Request):
+    """Security middleware for prediction endpoints"""
+    await security_middleware.rate_limit_check(request)
+
 @router.post("/predict", response_model=HeartDiseasePrediction)
 async def predict_heart_disease(
     input_data: HeartDiseaseInput,
+    request: Request,
     model: HeartDiseaseModel = Depends(get_model),
-    preprocessor: DataPreprocessor = Depends(get_preprocessor)
+    preprocessor: DataPreprocessor = Depends(get_preprocessor),
+    _: None = Depends(security_check)
 ):
     """
     Predict heart disease risk from input features
     
     Args:
         input_data: Heart disease input features
+        request: FastAPI request object for security logging
         model: Loaded model instance
         preprocessor: Data preprocessor instance
         
@@ -39,9 +47,17 @@ async def predict_heart_disease(
         Heart disease prediction with risk score and explanations
     """
     try:
+        # Sanitize input data
+        sanitized_data = security_middleware.sanitize_request_data(input_data.dict())
+        input_data = HeartDiseaseInput(**sanitized_data)
+        
         # Validate input
         validation_errors = preprocessor.validate_input_range(input_data)
         if validation_errors:
+            log_security_event("input_validation_failed", {
+                "errors": validation_errors,
+                "input_data": sanitized_data
+            }, request)
             raise HTTPException(status_code=400, detail=f"Validation errors: {', '.join(validation_errors)}")
         
         # Preprocess input

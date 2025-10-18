@@ -4,12 +4,13 @@ Heart Disease Risk Predictor - FastAPI Application
 
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from routers import predict, upload
 from core.model import model_instance
 from core.preprocess import preprocessor_instance
+from core.security import SecurityConfig, log_security_event
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,6 +38,9 @@ async def lifespan(app: FastAPI):
     # Shutdown
     print("Shutting down Heart Disease Risk Predictor API...")
 
+# Initialize security configuration
+security_config = SecurityConfig()
+
 # Create FastAPI app
 app = FastAPI(
     title="Heart Disease Risk Predictor",
@@ -45,17 +49,12 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Configure CORS
+# Configure CORS with environment-based settings
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://*.vercel.app",
-        "https://heart-disease-predictor.vercel.app"
-    ],
+    allow_origins=security_config.cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -103,16 +102,29 @@ async def http_exception_handler(request, exc):
     )
 
 @app.exception_handler(Exception)
-async def general_exception_handler(request, exc):
+async def general_exception_handler(request: Request, exc):
     """General exception handler"""
+    # Log security events for unexpected errors
+    log_security_event("unexpected_error", {
+        "error_type": type(exc).__name__,
+        "error_message": str(exc),
+        "path": str(request.url.path),
+        "method": request.method
+    }, request)
+    
     return JSONResponse(
         status_code=500,
         content={
             "error": "Internal server error",
-            "detail": str(exc) if os.getenv("DEBUG") else "An unexpected error occurred"
+            "detail": str(exc) if security_config.debug else "An unexpected error occurred"
         }
     )
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(
+        app, 
+        host=security_config.api_host, 
+        port=security_config.api_port,
+        log_level=security_config.log_level.lower()
+    )

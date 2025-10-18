@@ -323,8 +323,15 @@ To retrain the model with new data:
 
 - **No Data Storage**: Uploaded files are processed and discarded
 - **Input Validation**: Comprehensive validation on all inputs
-- **CORS Protection**: Configured for specific origins
+- **CORS Protection**: Environment-based configuration for specific origins
 - **Error Handling**: Secure error messages without sensitive data
+- **Rate Limiting**: Per-IP rate limiting to prevent abuse
+- **File Security**: Magic byte validation and content scanning
+- **Input Sanitization**: All user inputs sanitized before processing
+- **Security Logging**: Comprehensive logging of security events
+- **Production Ready**: Environment-based security configuration
+
+See [SECURITY.md](SECURITY.md) for detailed security configuration guide.
 
 ## ⚠️ Medical Disclaimer
 
