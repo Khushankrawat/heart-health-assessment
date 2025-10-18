@@ -1,0 +1,140 @@
+{
+  "numeric_features": [
+    "Age",
+    "Cholesterol",
+    "Blood Pressure",
+    "Heart Rate",
+    "Exercise Hours",
+    "Stress Level",
+    "Blood Sugar"
+  ],
+  "categorical_features": [
+    "Gender",
+    "Smoking",
+    "Alcohol Intake",
+    "Family History",
+    "Diabetes",
+    "Obesity",
+    "Exercise Induced Angina",
+    "Chest Pain Type"
+  ],
+  "label_encoders": {
+    "Gender": [
+      "Female",
+      "Male"
+    ],
+    "Smoking": [
+      "Current",
+      "Former",
+      "Never"
+    ],
+    "Alcohol Intake": [
+      "Heavy",
+      "Moderate",
+      "nan"
+    ],
+    "Family History": [
+      "No",
+      "Yes"
+    ],
+    "Diabetes": [
+      "No",
+      "Yes"
+    ],
+    "Obesity": [
+      "No",
+      "Yes"
+    ],
+    "Exercise Induced Angina": [
+      "No",
+      "Yes"
+    ],
+    "Chest Pain Type": [
+      "Asymptomatic",
+      "Atypical Angina",
+      "Non-anginal Pain",
+      "Typical Angina"
+    ]
+  },
+  "target_column": "Heart Disease",
+  "model_version": "1.0.0",
+  "total_features": 15,
+  "feature_names": [
+    "Age",
+    "Gender",
+    "Cholesterol",
+    "Blood Pressure",
+    "Heart Rate",
+    "Smoking",
+    "Alcohol Intake",
+    "Exercise Hours",
+    "Family History",
+    "Diabetes",
+    "Obesity",
+    "Stress Level",
+    "Blood Sugar",
+    "Exercise Induced Angina",
+    "Chest Pain Type"
+  ],
+  "metrics": {
+    "accuracy": 0.8733333333333333,
+    "precision": 0.8728166160081053,
+    "recall": 0.8733333333333333,
+    "f1": 0.872708186447317,
+    "roc_auc": 0.9519463587260196,
+    "confusion_matrix": [
+      [
+        83,
+        8
+      ],
+      [
+        11,
+        48
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.8829787234042553,
+        "recall": 0.9120879120879121,
+        "f1-score": 0.8972972972972973,
+        "support": 91.0
+      },
+      "1": {
+        "precision": 0.8571428571428571,
+        "recall": 0.8135593220338984,
+        "f1-score": 0.8347826086956521,
+        "support": 59.0
+      },
+      "accuracy": 0.8733333333333333,
+      "macro avg": {
+        "precision": 0.8700607902735562,
+        "recall": 0.8628236170609052,
+        "f1-score": 0.8660399529964747,
+        "support": 150.0
+      },
+      "weighted avg": {
+        "precision": 0.8728166160081053,
+        "recall": 0.8733333333333333,
+        "f1-score": 0.872708186447317,
+        "support": 150.0
+      }
+    }
+  },
+  "feature_importance": {
+    "Age": 3.0038753124631263,
+    "Gender": 2.0055375266862168,
+    "Stress Level": 0.4323965777501581,
+    "Obesity": 0.24726635713961312,
+    "Exercise Hours": 0.22105398159400488,
+    "Smoking": 0.16463281609686176,
+    "Exercise Induced Angina": 0.12058055656517026,
+    "Blood Sugar": 0.08954135280224293,
+    "Diabetes": 0.08691259085685112,
+    "Blood Pressure": 0.0727019666586962,
+    "Chest Pain Type": 0.04617002696687035,
+    "Heart Rate": 0.030835243009964135,
+    "Family History": 0.024325180541335843,
+    "Cholesterol": 0.016023864181753326,
+    "Alcohol Intake": 0.0051053720775731
+  }
+}

@@ -1,0 +1,205 @@
+# Product Requirements Document (PRD)
+## Project: Heart Disease Risk Predictor
+
+### 1. Overview
+The Heart Disease Risk Predictor is a web-based application that allows users to upload their health reports or manually enter medical parameters. The system processes the report, extracts relevant clinical data, and predicts the potential risk of heart disease using a trained machine learning model. The output provides a risk score, classification (Low, Moderate, or High), and a list of top contributing factors that influenced the prediction.
+
+This tool is designed for **educational and informational purposes only** and is **not a diagnostic or medical tool**.
+
+---
+
+### 2. Objectives
+- Enable users to upload a health report (PDF or image) or fill out a manual form.
+- Extract relevant health metrics automatically from uploaded files.
+- Predict the likelihood of heart disease using a trained machine learning model.
+- Display key factors influencing the risk score.
+- Ensure a clean, secure, and responsive user experience.
+
+---
+
+### 3. Core Features
+1. **File Upload**
+   - Accepts PDF, JPG, or PNG files.
+   - Extracts data using PDF parsing or OCR (Optical Character Recognition).
+   - Supports fallback manual entry when extraction fails.
+
+2. **Manual Entry Form**
+   - Allows users to input standard parameters:
+     - Age, Sex, Chest Pain Type, Resting BP, Cholesterol, Fasting Blood Sugar, Rest ECG, Max Heart Rate, Exercise Angina, Oldpeak, Slope, CA, Thal.
+
+3. **Prediction Engine**
+   - Uses a trained machine learning model (Logistic Regression, XGBoost, or LightGBM).
+   - Produces a probability score (0–1) and categorical risk label.
+   - Supports model versioning and reproducibility.
+
+4. **Explainability**
+   - Provides top 3–5 contributing features using SHAP or permutation importance.
+   - Displays insights in simple language for better understanding.
+
+5. **Results Dashboard**
+   - Shows risk level (Low, Moderate, High) and key influencing factors.
+   - Displays simple visual cues (gauge chart or color indicator).
+   - Offers general health advisory text (non-clinical).
+
+6. **Data Privacy**
+   - Uploaded data is processed locally or temporarily stored.
+   - Automatic deletion after processing (no long-term retention).
+   - No PII (Personal Identifiable Information) stored.
+
+---
+
+### 4. Stretch Goals
+- Generate downloadable PDF summary of predictions.
+- Multi-language support (English, Arabic).
+- Integration with cloud storage (S3-compatible).
+- Historical log of predictions (with user consent).
+- Dashboard for model metrics and monitoring.
+
+---
+
+### 5. Technical Stack
+| Layer | Technology |
+| ------ | ----------- |
+| Frontend | React, Vite, Tailwind CSS, shadcn/ui |
+| Backend | FastAPI (Python) |
+| Machine Learning | scikit-learn, XGBoost/LightGBM, SHAP |
+| OCR / Parsing | PyMuPDF (fitz), pdfplumber, pytesseract |
+| Database (optional) | SQLite (MVP) or PostgreSQL |
+| Deployment | Localhost / Docker-ready setup |
+| Testing | pytest (backend), React Testing Library (frontend) |
+
+---
+
+### 6. System Architecture
+**Flow:**
+1. User uploads health report or fills manual form.  
+2. Backend extracts structured data (via parsing or OCR).  
+3. Extracted features are validated and preprocessed.  
+4. Model generates probability score and classification.  
+5. SHAP explains top contributing factors.  
+6. Frontend displays prediction results with guidance.
+
+**Modules:**
+- Upload Service (PDF/Image parsing)
+- Feature Extraction & Validation
+- Model Inference Service
+- Explainability Engine
+- Result Aggregator
+- Web UI Interface
+
+---
+
+### 7. Data Model
+use "/Users/khushankrawat/Downloads/heart_disease_dataset.csv" for data model reference
+
+**Output Schema:**
+| Field | Type | Description |
+| ------ | ---- | ----------- |
+| risk_score | float | Predicted probability of heart disease |
+| risk_label | string | Low / Moderate / High |
+| top_contributors | list | Key influencing features with importance values |
+| notes | list | Educational recommendations |
+| model_version | string | Model version identifier |
+
+---
+
+### 8. API Endpoints
+| Endpoint | Method | Description |
+| ---------- | ------- | ------------ |
+| `/api/upload` | POST | Uploads PDF/Image and extracts medical data |
+| `/api/predict` | POST | Predicts heart disease risk from input features |
+
+---
+
+### 9. Evaluation Metrics
+- ROC-AUC ≥ 0.85  
+- Recall ≥ 0.80 for High-Risk category  
+- Model calibration verified (isotonic or Platt scaling)  
+- Explainability stability checked across folds  
+
+---
+
+### 10. Privacy & Compliance
+- Clear disclaimer: “This tool is not a substitute for professional medical advice.”  
+- No storage of uploaded files beyond processing duration.  
+- Option for user to delete results manually.  
+- No personal identifiers required.  
+
+---
+
+### 11. Folder Structure
+```
+heart-risk/
+  backend/
+    app.py
+    routers/
+      predict.py
+      upload.py
+    core/
+      model.py
+      preprocess.py
+      explain.py
+      schema.py
+      ocr.py
+      pdf.py
+    models/
+      model.pkl
+      preprocessor.pkl
+      feature_meta.json
+    tests/
+      test_predict_api.py
+  frontend/
+    index.html
+    src/
+      main.tsx
+      App.tsx
+      components/
+        UploadCard.tsx
+        ManualForm.tsx
+        ResultCard.tsx
+  scripts/
+    train_model.ipynb
+    train.py
+  .env.example
+  README.md
+```
+
+---
+
+### 12. Testing Plan
+- **Unit Tests**:  
+  - Model prediction validation.  
+  - OCR and PDF parsing accuracy.  
+  - API schema validation.
+- **Integration Tests**:  
+  - Upload → Predict → Explain flow.  
+- **UI Tests**:  
+  - File upload, form input, and results rendering.
+- **Performance Tests**:  
+  - Average response time < 2s for standard inputs.
+
+---
+
+### 13. Deliverables
+1. Trained model and preprocessor artifacts (`model.pkl`, `preprocessor.pkl`).  
+2. Working web app (frontend + backend).  
+3. README with setup instructions.  
+4. Evaluation report with key metrics.  
+5. Sample input-output test cases.
+
+---
+
+### 14. Future Enhancements
+- Integration with wearable data (Fitbit, Apple Health).  
+- Personalized lifestyle recommendations (diet/exercise).  
+- Federated learning for privacy-preserving model updates.  
+- Auto-translation and accessibility enhancements.
+
+---
+
+### 15. Disclaimer
+This application is intended solely for **informational and educational purposes**.  
+It should **not be used for clinical diagnosis or treatment decisions**.  
+Always consult a qualified medical professional for any health concerns.
+
+---
