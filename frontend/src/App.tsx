@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/ResultCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Heart, Upload, AlertCircle, Stethoscope, Activity, ClipboardList } from 'lucide-react'
-import { apiClient, type HeartDiseaseInput, type HeartDiseasePrediction } from './lib/api'
+import { apiClient, type HeartDiseaseInput, type HeartDiseasePrediction } from '@/lib/api'
 
 type AppState = 'upload' | 'manual' | 'result' | 'loading'
 
