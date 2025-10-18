@@ -28,10 +28,5 @@
   ],
   "env": {
     "PYTHONPATH": "/var/task"
-  },
-  "functions": {
-    "backend/app.py": {
-      "maxDuration": 30
-    }
   }
 }
