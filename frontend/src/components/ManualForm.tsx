@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Heart, User, Activity, ClipboardList } from 'lucide-react'
-import type { HeartDiseaseInput } from '@/lib/api'
+import type { HeartDiseaseInput } from '@/lib/api.ts'
 
 interface ManualFormProps {
   onSubmit: (data: HeartDiseaseInput) => void
