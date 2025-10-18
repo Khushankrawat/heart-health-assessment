@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { Heart, TrendingUp, AlertTriangle, CheckCircle, RotateCcw, Stethoscope, Activity } from 'lucide-react'
+import { Heart, TrendingUp, AlertTriangle, CheckCircle, RotateCcw, Stethoscope, Activity, Zap } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { formatRiskScore, getRiskColor, getRiskIcon } from '@/lib/utils'
-import type { HeartDiseasePrediction } from '@/lib/api'
+import { formatRiskScore, getRiskColor, getRiskIcon } from '../../lib/utils'
+import type { HeartDiseasePrediction } from '../../lib/api'
 
 interface ResultCardProps {
   prediction: HeartDiseasePrediction

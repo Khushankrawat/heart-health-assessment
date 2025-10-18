@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, FileText, Image, AlertCircle, CheckCircle, Stethoscope, Activity } from 'lucide-react'
+import { Upload, FileText, Image, AlertCircle, CheckCircle, Stethoscope, Activity, Zap } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { apiClient, type HeartDiseaseInput, type UploadResponse } from '@/lib/api'
+import { apiClient, type HeartDiseaseInput, type UploadResponse } from '../../lib/api'
 
 interface UploadCardProps {
   onDataExtracted: (data: HeartDiseaseInput) => void
