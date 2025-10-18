@@ -5,7 +5,7 @@ import { ManualForm } from '@/components/ManualForm'
 import { ResultCard } from '@/components/ResultCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Heart, Upload, FileText, AlertCircle, Stethoscope, Zap, Activity, Sparkles, User, ClipboardList } from 'lucide-react'
+import { Heart, Upload, AlertCircle, Stethoscope, Activity, ClipboardList } from 'lucide-react'
 import { apiClient, type HeartDiseaseInput, type HeartDiseasePrediction } from '@/lib/api'
 
 type AppState = 'upload' | 'manual' | 'result' | 'loading'

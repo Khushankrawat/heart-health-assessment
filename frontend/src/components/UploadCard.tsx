@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, FileText, Image, AlertCircle, CheckCircle, Sparkles, Zap, Stethoscope, Activity, ClipboardList } from 'lucide-react'
+import { Upload, FileText, Image, AlertCircle, CheckCircle, Stethoscope, Activity } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { apiClient, type HeartDiseaseInput, type UploadResponse } from '@/lib/api'
@@ -93,15 +93,13 @@ export function UploadCard({ onDataExtracted, onError }: UploadCardProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <motion.div
+              <div
                 {...getRootProps()}
                 className={`
                   border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300
                   ${isDragActive ? 'border-primary bg-primary/5 scale-105' : 'border-muted-foreground/25'}
                   ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary hover:bg-primary/5 hover:scale-102'}
                 `}
-                whileHover={{ scale: isUploading ? 1 : 1.02 }}
-                whileTap={{ scale: isUploading ? 1 : 0.98 }}
               >
                 <input {...getInputProps()} />
                 <div className="space-y-4">
@@ -151,7 +149,7 @@ export function UploadCard({ onDataExtracted, onError }: UploadCardProps) {
                     </p>
                   </motion.div>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

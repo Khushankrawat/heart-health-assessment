@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, TrendingUp, AlertTriangle, CheckCircle, RotateCcw, Sparkles, Zap, Stethoscope, Activity, Shield } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Heart, TrendingUp, AlertTriangle, CheckCircle, RotateCcw, Stethoscope, Activity } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -132,7 +132,7 @@ export function ResultCard({ prediction, onReset }: ResultCardProps) {
             Top Contributing Factors
           </h3>
           <div className="grid gap-3">
-            {prediction.top_contributors.map((contributor, index) => (
+            {prediction.top_contributors.map((contributor: any, index: number) => (
               <motion.div 
                 key={contributor.feature} 
                 className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors"
@@ -177,7 +177,7 @@ export function ResultCard({ prediction, onReset }: ResultCardProps) {
             Health Recommendations
           </h3>
           <div className="space-y-2">
-            {prediction.notes.map((note, index) => (
+            {prediction.notes.map((note: string, index: number) => (
               <div key={index} className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-blue-800">{note}</p>

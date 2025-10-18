@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Heart, User, Activity, Stethoscope, ClipboardList } from 'lucide-react'
+import { Heart, User, Activity, ClipboardList } from 'lucide-react'
 import type { HeartDiseaseInput } from '@/lib/api'
 
 interface ManualFormProps {
@@ -36,7 +36,7 @@ export function ManualForm({ onSubmit, onError, initialData }: ManualFormProps) 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleInputChange = (field: keyof HeartDiseaseInput, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev: HeartDiseaseInput) => ({
       ...prev,
       [field]: value
     }))
