@@ -2,7 +2,7 @@
 
 A professional AI-powered web application for cardiovascular risk evaluation using advanced machine learning. Features a modern medical-themed interface with automated health report processing and comprehensive risk analysis.
 
-## 🚀 Features
+## Features
 
 - **AI-Powered Prediction**: Uses trained XGBoost/Logistic Regression models for accurate cardiovascular risk assessment
 - **Medical Report Upload**: Supports PDF, JPG, and PNG health reports with intelligent data extraction
@@ -12,7 +12,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **Professional UI**: Medical-themed design inspired by healthcare booking platforms
 - **Responsive Design**: Modern interface built with React, TailwindCSS, and shadcn/ui
 
-## 🏗️ Architecture
+## Architecture
 
 ### Backend (FastAPI)
 - **Model Training**: XGBoost classifier with fallback to Logistic Regression
@@ -35,7 +35,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **Explainability**: Normalized feature importance percentages (sum to 100%)
 - **Risk Assessment**: Professional cardiovascular risk categorization
 
-## 📊 Model Performance
+## Model Performance
 
 - **Accuracy**: 87.3%
 - **Precision**: 87.3%
@@ -43,7 +43,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **F1-Score**: 87.3%
 - **ROC-AUC**: 95.2%
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **FastAPI**: Modern Python web framework
@@ -62,7 +62,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **Lucide React**: Icons
 - **Axios**: HTTP client
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8+
@@ -110,7 +110,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
    - Backend API: http://localhost:8000
    - API Docs: http://localhost:8000/docs
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 heart_health_assessment/
@@ -153,7 +153,7 @@ heart_health_assessment/
 └── README.md                   # This file
 ```
 
-## 📊 API Documentation
+## API Documentation
 
 ### Endpoints
 
@@ -218,7 +218,7 @@ Upload medical report (PDF/image) for automated data extraction.
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -254,7 +254,7 @@ To retrain the model with new data:
 
 3. **Model artifacts** will be saved to `backend/models/`
 
-## 🧪 Testing
+## Testing
 
 ### Manual Testing
 1. Upload sample medical reports (PDF/images)
@@ -263,14 +263,14 @@ To retrain the model with new data:
 4. Check feature importance percentages sum to 100%
 5. Test error handling and edge cases
 
-## 📈 Performance
+## Performance
 
 - **Model Inference**: < 100ms
 - **File Upload**: < 2s for 10MB files
 - **OCR Processing**: < 5s for images
 - **PDF Processing**: < 3s for documents
 
-## 🔒 Security & Privacy
+## Security & Privacy
 
 - **No Data Storage**: Uploaded files are processed and discarded
 - **Input Validation**: Comprehensive validation on all inputs
@@ -284,7 +284,7 @@ To retrain the model with new data:
 
 See [SECURITY.md](SECURITY.md) for detailed security configuration guide.
 
-## ⚠️ Medical Disclaimer
+## Medical Disclaimer
 
 **This tool is for educational purposes only and should not replace professional medical advice.**
 
@@ -293,7 +293,7 @@ See [SECURITY.md](SECURITY.md) for detailed security configuration guide.
 - Use at your own risk
 - No medical liability assumed
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -301,18 +301,18 @@ See [SECURITY.md](SECURITY.md) for detailed security configuration guide.
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Heart disease dataset for model training
 - FastAPI and React communities
 - shadcn/ui for component library
 - Medical UI design inspiration
 
-## 📞 Support
+## Support
 
 For issues and questions:
 - Create an issue on GitHub
@@ -321,4 +321,4 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ for better cardiovascular health awareness**
+**Built with love for better cardiovascular health awareness**
