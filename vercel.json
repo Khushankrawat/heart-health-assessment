@@ -12,7 +12,8 @@
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "installCommand": "npm ci --only=production"
       }
     }
   ],
@@ -33,5 +34,11 @@
     "backend/app.py": {
       "maxDuration": 30
     }
-  }
+  },
+  "ignore": [
+    "node_modules",
+    "frontend/node_modules",
+    "logs",
+    "*.log"
+  ]
 }
