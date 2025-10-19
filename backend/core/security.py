@@ -13,14 +13,30 @@ from fastapi.responses import JSONResponse
 import logging
 
 # Configure logging
-logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO"),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(os.getenv("LOG_FILE", "logs/app.log")),
-        logging.StreamHandler()
-    ]
-)
+def setup_logging():
+    """Setup logging with proper error handling"""
+    environment = os.getenv("ENVIRONMENT", "development")
+    handlers = [logging.StreamHandler()]  # Always include console logging
+    
+    # Only add file logging in development environment
+    if environment == "development":
+        log_file = os.getenv("LOG_FILE", "logs/app.log")
+        try:
+            log_dir = os.path.dirname(log_file)
+            if log_dir and not os.path.exists(log_dir):
+                os.makedirs(log_dir, exist_ok=True)
+            handlers.append(logging.FileHandler(log_file))
+        except (OSError, PermissionError):
+            # If file logging fails, continue with console logging only
+            pass
+    
+    logging.basicConfig(
+        level=os.getenv("LOG_LEVEL", "INFO"),
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=handlers
+    )
+
+setup_logging()
 logger = logging.getLogger(__name__)
 
 class SecurityConfig:
