@@ -27,7 +27,6 @@
 
 3. **Environment Variables**
    ```
-   PYTHON_VERSION=3.10.12
    MAX_FILE_SIZE=10485760
    PLATFORM_MAX_SIZE=209715200
    SECRET_KEY=[Generate random key]
@@ -87,3 +86,8 @@ After both services are deployed, update the backend CORS_ORIGINS with your actu
 - **Frontend**: `https://heart-disease-frontend.onrender.com`
 - **Backend API**: `https://heart-disease-backend.onrender.com`
 - **Health Check**: `https://heart-disease-backend.onrender.com/health`
+
+## 📝 Important Notes
+- **Python Version**: The project uses `runtime.txt` to specify Python 3.10.12
+- **Do NOT set `PYTHON_VERSION` environment variable** as it conflicts with `runtime.txt`
+- **XGBoost 3.1.0** requires Python 3.10+, which is specified in `runtime.txt`
