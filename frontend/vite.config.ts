@@ -13,7 +13,15 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-toast']
+        }
+      }
+    }
   },
   server: {
     port: 5173,
