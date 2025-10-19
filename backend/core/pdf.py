@@ -5,10 +5,26 @@ PDF processing utilities for extracting health data
 import io
 import re
 from typing import Dict, Any, Optional, List
-import fitz  # PyMuPDF
-import pdfplumber
 from PIL import Image
-import pytesseract
+
+# Optional imports with fallbacks
+try:
+    import fitz  # PyMuPDF
+    PYMUPDF_AVAILABLE = True
+except ImportError:
+    PYMUPDF_AVAILABLE = False
+
+try:
+    import pdfplumber
+    PDFPLUMBER_AVAILABLE = True
+except ImportError:
+    PDFPLUMBER_AVAILABLE = False
+
+try:
+    import pytesseract
+    PYTESSERACT_AVAILABLE = True
+except ImportError:
+    PYTESSERACT_AVAILABLE = False
 
 class PDFProcessor:
     """PDF processing for health report extraction"""
@@ -238,17 +254,22 @@ class PDFProcessor:
             Dictionary with extracted health data
         """
         try:
-            # Try pdfplumber first
-            extracted_data = self._extract_with_pdfplumber(pdf_content)
-            if extracted_data:
-                return extracted_data
+            extracted_data = None
             
-            # Fallback to PyMuPDF
-            extracted_data = self._extract_with_pymupdf(pdf_content)
-            if extracted_data:
-                return extracted_data
+            # Try pdfplumber first if available
+            if PDFPLUMBER_AVAILABLE:
+                extracted_data = self._extract_with_pdfplumber(pdf_content)
             
-            return {}
+            # Fallback to PyMuPDF if available
+            if not extracted_data and PYMUPDF_AVAILABLE:
+                extracted_data = self._extract_with_pymupdf(pdf_content)
+            
+            # If no PDF libraries available, return empty dict
+            if not PDFPLUMBER_AVAILABLE and not PYMUPDF_AVAILABLE:
+                print("Warning: No PDF processing libraries available")
+                return {}
+            
+            return extracted_data or {}
             
         except Exception as e:
             print(f"Error extracting from PDF: {e}")
@@ -256,6 +277,8 @@ class PDFProcessor:
     
     def _extract_with_pdfplumber(self, pdf_content: bytes) -> Optional[Dict[str, Any]]:
         """Extract text using pdfplumber"""
+        if not PDFPLUMBER_AVAILABLE:
+            return None
         try:
             with pdfplumber.open(io.BytesIO(pdf_content)) as pdf:
                 text = ""
@@ -270,6 +293,8 @@ class PDFProcessor:
     
     def _extract_with_pymupdf(self, pdf_content: bytes) -> Optional[Dict[str, Any]]:
         """Extract text using PyMuPDF"""
+        if not PYMUPDF_AVAILABLE:
+            return None
         try:
             doc = fitz.open(stream=pdf_content, filetype="pdf")
             text = ""

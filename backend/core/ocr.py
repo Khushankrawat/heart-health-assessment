@@ -5,7 +5,13 @@ OCR utilities for image processing
 import io
 from typing import Dict, Any, Optional
 from PIL import Image
-import pytesseract
+
+# Optional imports with fallbacks
+try:
+    import pytesseract
+    PYTESSERACT_AVAILABLE = True
+except ImportError:
+    PYTESSERACT_AVAILABLE = False
 
 class OCRProcessor:
     """OCR processing for health report images"""
@@ -25,6 +31,10 @@ class OCRProcessor:
             Extracted text string
         """
         try:
+            if not PYTESSERACT_AVAILABLE:
+                print("Warning: pytesseract not available, OCR functionality disabled")
+                return ""
+                
             # Open image
             image = Image.open(io.BytesIO(image_content))
             

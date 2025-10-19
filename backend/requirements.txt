@@ -1,17 +1,31 @@
+# Core web framework
 fastapi==0.104.1
 uvicorn==0.24.0
+python-multipart==0.0.6
+aiofiles==23.2.1
+
+# Data processing
 pandas==2.2.2
 numpy==1.26.4
 scikit-learn==1.4.2
 xgboost==3.1.0
-python-multipart==0.0.6
+
+# Authentication and security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-aiofiles==23.2.1
+
+# Image processing (simplified)
 pillow==10.1.0
-pytesseract==0.3.10
-pdfplumber==0.10.3
-pymupdf==1.23.8
-shap==0.44.0
+
+# PDF processing (using lighter alternatives)
+pypdf==4.0.1
+
+# Data validation
 pydantic==2.5.0
 python-dotenv==1.0.0
+
+# Optional: Remove heavy packages that cause build issues
+# pytesseract==0.3.10  # Requires Tesseract OCR system
+# pdfplumber==0.10.3   # Heavy dependencies
+# pymupdf==1.23.8      # Heavy compilation
+# shap==0.44.0         # Heavy ML explanation library

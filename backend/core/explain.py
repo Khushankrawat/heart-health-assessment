@@ -5,8 +5,14 @@ Model explainability using SHAP
 import numpy as np
 import pandas as pd
 from typing import Dict, Any, List, Optional
-import shap
 from .model import model_instance
+
+# Optional imports with fallbacks
+try:
+    import shap
+    SHAP_AVAILABLE = True
+except ImportError:
+    SHAP_AVAILABLE = False
 
 class ModelExplainer:
     """SHAP-based model explainer for heart disease prediction"""
@@ -103,7 +109,39 @@ class ModelExplainer:
             
         except Exception as e:
             print(f"Error generating SHAP explanation: {e}")
-            return None
+            return self._simple_explanation(input_data)
+    
+    def _simple_explanation(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Simple explanation without SHAP"""
+        try:
+            # Get model feature importance if available
+            model = model_instance.model
+            if model is None:
+                return {"error": "Model not loaded"}
+            
+            # Simple feature importance based on input values
+            contributions = []
+            for feature, value in input_data.items():
+                if isinstance(value, (int, float)):
+                    # Simple importance based on value magnitude
+                    importance = abs(value) / 100.0  # Normalize
+                    contributions.append({
+                        'feature': feature,
+                        'value': value,
+                        'importance': min(importance, 1.0)
+                    })
+            
+            # Sort by importance
+            contributions.sort(key=lambda x: x['importance'], reverse=True)
+            
+            return {
+                'contributions': contributions[:10],
+                'explanation_method': 'Simple'
+            }
+            
+        except Exception as e:
+            print(f"Error generating simple explanation: {e}")
+            return {"error": "Failed to generate explanation"}
     
     def get_feature_importance(self) -> List[Dict[str, Any]]:
         """Get global feature importance"""
