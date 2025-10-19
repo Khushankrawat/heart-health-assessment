@@ -11,7 +11,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **Risk Categorization**: Low/Moderate/High risk levels with professional medical recommendations
 - **Professional UI**: Medical-themed design inspired by healthcare booking platforms
 - **Responsive Design**: Modern interface built with React, TailwindCSS, and shadcn/ui
-- **One-Click Deployment**: Ready for Vercel deployment
+- **One-Click Deployment**: Ready for Render.com deployment
 
 ## 🏗️ Architecture
 
@@ -64,7 +64,7 @@ A professional AI-powered web application for cardiovascular risk evaluation usi
 - **Axios**: HTTP client
 
 ### Deployment
-- **Vercel**: Serverless deployment platform
+- **Render.com**: Cloud deployment platform
 - **Python Runtime**: Serverless functions
 - **Static Build**: Frontend hosting
 
@@ -155,52 +155,62 @@ heart_health_assessment/
 │   ├── package.json
 │   └── vite.config.ts
 ├── heart_disease_dataset.csv   # Training dataset
-├── vercel.json                 # Vercel deployment config
+├── render.yaml              # Render.com deployment config
 ├── .gitignore                  # Git ignore rules
 └── README.md                   # This file
 ```
 
-## 🚀 Vercel Deployment
+## 🚀 Render.com Deployment
 
 ### One-Click Deployment
 
 1. **Fork this repository** to your GitHub account
 
-2. **Connect to Vercel**
-   - Go to [vercel.com](https://vercel.com)
+2. **Connect to Render**
+   - Go to [render.com](https://render.com)
    - Sign in with GitHub
-   - Click "New Project"
-   - Import your forked repository
+   - Click "New" → "Web Service" for backend
+   - Click "New" → "Static Site" for frontend
 
-3. **Configure Build Settings**
-   - Framework Preset: Other
-   - Root Directory: Leave empty
-   - Build Command: `cd frontend && npm run build`
-   - Output Directory: `frontend/dist`
+3. **Deploy Backend API**
+   - Select your GitHub repository
+   - Configure:
+     ```
+     Name: heart-disease-backend
+     Environment: Python 3
+     Build Command: cd backend && pip install -r requirements.txt
+     Start Command: cd backend && python app.py
+     ```
 
-4. **Environment Variables** (Optional)
-   - Add any custom environment variables in Vercel dashboard
+4. **Deploy Frontend**
+   - Select your GitHub repository
+   - Configure:
+     ```
+     Name: heart-disease-frontend
+     Build Command: cd frontend && npm ci --only=production && npm run build
+     Publish Directory: frontend/dist
+     ```
 
-5. **Deploy**
-   - Click "Deploy"
-   - Wait for deployment to complete
-   - Your app will be available at `https://your-app-name.vercel.app`
+5. **Environment Variables**
+   - Backend: `SECRET_KEY`, `CORS_ORIGINS`, `MAX_FILE_SIZE`
+   - Frontend: `VITE_API_URL`
 
-### Manual Deployment
+6. **Deploy**
+   - Click "Deploy" for both services
+   - Your app will be available at `https://heart-disease-frontend.onrender.com`
 
-1. **Install Vercel CLI**
-   ```bash
-   npm i -g vercel
-   ```
+### Using render.yaml
 
-2. **Deploy**
-   ```bash
-   vercel
-   ```
+The project includes a `render.yaml` file for automatic deployment configuration.
 
-3. **Follow the prompts**
-   - Link to existing project or create new
-   - Configure settings as needed
+1. **Automatic Deployment**
+   - Push your code to GitHub
+   - Render will automatically detect the `render.yaml` file
+   - Both services will be deployed automatically
+
+2. **Manual Configuration**
+   - Follow the dashboard deployment steps above
+   - Configure environment variables as needed
 
 ## 📊 API Documentation
 
@@ -358,7 +368,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Heart disease dataset for model training
 - FastAPI and React communities
-- Vercel for deployment platform
+- Render.com for deployment platform
 - shadcn/ui for component library
 - Medical UI design inspiration
 
