@@ -6,7 +6,8 @@ services:
     plan: free
     buildCommand: |
       cd backend
-      pip install -r requirements.txt
+      pip install --upgrade pip
+      pip install --no-cache-dir -r requirements.txt || pip install --no-cache-dir -r requirements-minimal.txt
     startCommand: |
       cd backend
       python app.py

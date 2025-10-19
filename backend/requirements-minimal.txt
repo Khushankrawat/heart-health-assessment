@@ -1,0 +1,15 @@
+# Ultra-minimal requirements for deployment
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+aiofiles==23.2.1
+
+# Core ML packages
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.4.2
+xgboost==3.1.0
+
+# Basic validation
+pydantic==2.5.0
+python-dotenv==1.0.0
