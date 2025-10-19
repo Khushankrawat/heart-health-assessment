@@ -12,7 +12,7 @@ services:
       python app.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.9.18
+        value: 3.10.12
       - key: MAX_FILE_SIZE
         value: 10485760
       - key: PLATFORM_MAX_SIZE

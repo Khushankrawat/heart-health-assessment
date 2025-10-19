@@ -27,7 +27,7 @@
 
 3. **Environment Variables**
    ```
-   PYTHON_VERSION=3.9.18
+   PYTHON_VERSION=3.10.12
    MAX_FILE_SIZE=10485760
    PLATFORM_MAX_SIZE=209715200
    SECRET_KEY=[Generate random key]
