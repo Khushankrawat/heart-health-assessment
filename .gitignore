@@ -136,3 +136,7 @@ simple_test.py
 # Design inspiration files
 design-inspiration/
 inspiration/
+
+# Security - Secret keys and sensitive data
+SECRET_KEY=*
+*SECRET_KEY*
