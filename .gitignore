@@ -136,3 +136,4 @@ simple_test.py
 # Design inspiration files
 design-inspiration/
 inspiration/
+.vercel
