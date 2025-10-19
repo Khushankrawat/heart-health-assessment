@@ -62,6 +62,20 @@ async def upload_health_report(
                 detail="Invalid file type or size. Supported: PDF, JPG, PNG (max 10MB)"
             )
         
+        # Check for platform-specific size limits (Vercel has ~250MB limit)
+        file_size = getattr(file, 'size', None)
+        platform_max_size = security_middleware.config.platform_max_size
+        if file_size and file_size > platform_max_size:
+            log_security_event("file_near_platform_limit", {
+                "filename": file.filename,
+                "size": file_size,
+                "platform_limit": platform_max_size
+            }, request)
+            raise HTTPException(
+                status_code=413,
+                detail=f"File too large for platform. Maximum size: {platform_max_size // (1024*1024)}MB (platform limit)"
+            )
+        
         # Read file content
         content = await file.read()
         

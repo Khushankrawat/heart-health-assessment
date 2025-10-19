@@ -32,6 +32,7 @@ class SecurityConfig:
         self.secret_key = os.getenv("SECRET_KEY", "default-secret-key")
         self.cors_origins = self._parse_cors_origins()
         self.max_file_size = int(os.getenv("MAX_FILE_SIZE", "10485760"))
+        self.platform_max_size = int(os.getenv("PLATFORM_MAX_SIZE", "209715200"))  # 200MB default
         self.allowed_file_types = os.getenv("ALLOWED_FILE_TYPES", "").split(",")
         self.enable_file_scanning = os.getenv("ENABLE_FILE_SCANNING", "false").lower() == "true"
         self.rate_limit_requests = int(os.getenv("RATE_LIMIT_REQUESTS", "100"))

@@ -48,6 +48,19 @@ export function UploadCard({ onDataExtracted, onError }: UploadCardProps) {
     },
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024, // 10MB
+    onDropRejected: (fileRejections) => {
+      const rejection = fileRejections[0]
+      if (rejection) {
+        const { errors } = rejection
+        if (errors.some(e => e.code === 'file-too-large')) {
+          onError('File too large. Maximum size: 10MB')
+        } else if (errors.some(e => e.code === 'file-invalid-type')) {
+          onError('Invalid file type. Supported: PDF, JPG, PNG')
+        } else {
+          onError('File upload rejected. Please check file type and size.')
+        }
+      }
+    },
   })
 
   const handleSubmitExtracted = () => {
